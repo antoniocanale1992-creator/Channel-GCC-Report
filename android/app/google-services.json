@@ -1,0 +1,29 @@
+﻿{
+  "project_info": {
+    "project_number": "416637337233",
+    "project_id": "channel-gcc-report",
+    "storage_bucket": "channel-gcc-report.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:416637337233:android:c2a6446602537b621d8930",
+        "android_client_info": {
+          "package_name": "com.pokemontcg.localtracker.pokemon_gcc_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-cmsF8bOJLJECbxMpBY67XmPpOL-ed_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
