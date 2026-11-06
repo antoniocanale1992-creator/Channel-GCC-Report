@@ -42,7 +42,10 @@ class SyncService {
       final localDecks = await storage.getDecks();
       final localLocations = await storage.getLocations();
 
-      final userId = _getFirestoreUserId(user.email.isNotEmpty ? user.email : user.id);
+      final uid = AuthService.instance.currentUid;
+      final userId = (uid != null && uid.isNotEmpty)
+          ? uid
+          : _getFirestoreUserId(user.email.isNotEmpty ? user.email : user.id);
       int pushedCount = 0;
       int pulledCount = 0;
 

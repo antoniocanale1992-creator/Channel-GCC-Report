@@ -1,0 +1,32 @@
+﻿rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Configurazione e Kill Switch globale:
+    // Lettura consentita a tutti i client dell'app (anche prima dell'accesso utente).
+    // Scrittura riservata agli amministratori o dalla console Firebase.
+    match /config/app_status {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Collezione utenti isolata:
+    // Ciascun utente autenticato puo' leggere e scrivere esclusivamente nella propria cartella
+    // corrispondente al proprio UID di Firebase Auth.
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      match /tornei/{torneoId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      match /mazzi/{mazzoId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      match /locations/{locationId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}

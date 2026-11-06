@@ -1,4 +1,4 @@
-﻿/// Modello per il profilo utente autenticato (Google, Apple, Email o Ospite)
+/// Modello per il profilo utente autenticato (Google, Apple, Email o Ospite)
 class UserProfile {
   final String id;
   final String displayName;
@@ -21,6 +21,7 @@ class UserProfile {
   });
 
   UserProfile copyWith({
+    String? id,
     String? displayName,
     String? email,
     String? photoUrl,
@@ -29,7 +30,7 @@ class UserProfile {
     bool? isAnonymous,
   }) {
     return UserProfile(
-      id: id,
+      id: id ?? this.id,
       displayName: displayName ?? this.displayName,
       email: email ?? this.email,
       photoUrl: photoUrl ?? this.photoUrl,
