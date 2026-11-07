@@ -103,6 +103,12 @@ class ExportService {
         buffer.writeln('• $dStr: ${r.eventType}$loc');
         buffer.writeln('  Mazzo: ${r.deckUsed}');
         buffer.writeln('  Risultato: ${r.finalScoreDisplay} (WR: ${r.winRateDisplay})$pos$pts');
+        if (r.rounds.isNotEmpty) {
+          for (final rd in r.rounds) {
+            final cons = rd.considerations.isNotEmpty ? ' [Nota: ${rd.considerations}]' : '';
+            buffer.writeln('  - T${rd.roundNumber}: vs ${rd.opponentDeck.isNotEmpty ? rd.opponentDeck : 'N/D'} (${rd.outcome.code})$cons');
+          }
+        }
         if (r.whatWorked.isNotEmpty) buffer.writeln('  + Funzionato: ${r.whatWorked}');
         if (r.toImprove.isNotEmpty) buffer.writeln('  - Da migliorare: ${r.toImprove}');
         buffer.writeln('');

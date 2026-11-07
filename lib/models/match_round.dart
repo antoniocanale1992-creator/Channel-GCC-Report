@@ -29,11 +29,13 @@ class MatchRound {
   final int roundNumber;
   String opponentDeck;
   MatchOutcome outcome;
+  String considerations;
 
   MatchRound({
     required this.roundNumber,
     this.opponentDeck = '',
     this.outcome = MatchOutcome.none,
+    this.considerations = '',
   });
 
   bool get isWin => outcome == MatchOutcome.win;
@@ -46,6 +48,7 @@ class MatchRound {
       'roundNumber': roundNumber,
       'opponentDeck': opponentDeck,
       'outcome': outcome.code,
+      'considerations': considerations,
     };
   }
 
@@ -54,6 +57,7 @@ class MatchRound {
       roundNumber: json['roundNumber'] as int? ?? 1,
       opponentDeck: json['opponentDeck'] as String? ?? '',
       outcome: MatchOutcome.fromCode(json['outcome'] as String?),
+      considerations: json['considerations'] as String? ?? json['notes'] as String? ?? '',
     );
   }
 
@@ -61,11 +65,13 @@ class MatchRound {
     int? roundNumber,
     String? opponentDeck,
     MatchOutcome? outcome,
+    String? considerations,
   }) {
     return MatchRound(
       roundNumber: roundNumber ?? this.roundNumber,
       opponentDeck: opponentDeck ?? this.opponentDeck,
       outcome: outcome ?? this.outcome,
+      considerations: considerations ?? this.considerations,
     );
   }
 }

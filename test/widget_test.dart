@@ -56,6 +56,7 @@ void main() {
     expect(find.text('W'), findsNWidgets(3));
     expect(find.text('L'), findsNWidgets(3));
     expect(find.text('D'), findsNWidgets(3));
+    expect(find.byIcon(Icons.chat_bubble_outline_rounded), findsNWidgets(3));
 
     // 4. Verifica Sezione Statistica Finale
     expect(find.text('Statistica Finale'), findsOneWidget);

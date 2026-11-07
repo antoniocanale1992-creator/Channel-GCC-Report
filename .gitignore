@@ -47,3 +47,7 @@ app.*.map.json
 # Built artifacts
 *.apk
 *.ipa
+
+# Firebase cache
+.firebase/
+

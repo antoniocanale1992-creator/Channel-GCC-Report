@@ -43,6 +43,7 @@ class _TournamentEntryScreenState extends State<TournamentEntryScreen> {
   // Dati Sezione 3: Match dinamici
   final List<MatchRound> _roundsData = [];
   final List<TextEditingController> _opponentControllers = [];
+  final List<TextEditingController> _considerationsControllers = [];
 
   // Dati Sezione 4: Statistica Finale
   bool _isScoreManual = false;
@@ -110,16 +111,20 @@ class _TournamentEntryScreenState extends State<TournamentEntryScreen> {
           final initItem = initialRounds[roundIndex];
           _roundsData.add(initItem);
           _opponentControllers.add(TextEditingController(text: initItem.opponentDeck));
+          _considerationsControllers.add(TextEditingController(text: initItem.considerations));
         } else {
           _roundsData.add(MatchRound(roundNumber: roundIndex + 1));
           _opponentControllers.add(TextEditingController());
+          _considerationsControllers.add(TextEditingController());
         }
       }
 
       while (_roundsData.length > count) {
         _roundsData.removeLast();
-        final ctrl = _opponentControllers.removeLast();
-        ctrl.dispose();
+        final ctrlOpp = _opponentControllers.removeLast();
+        ctrlOpp.dispose();
+        final ctrlCons = _considerationsControllers.removeLast();
+        ctrlCons.dispose();
       }
     });
   }
@@ -130,6 +135,9 @@ class _TournamentEntryScreenState extends State<TournamentEntryScreen> {
     _locationController.dispose();
     _deckUsedController.dispose();
     for (var c in _opponentControllers) {
+      c.dispose();
+    }
+    for (var c in _considerationsControllers) {
       c.dispose();
     }
     _manualScoreController.dispose();
@@ -164,9 +172,10 @@ class _TournamentEntryScreenState extends State<TournamentEntryScreen> {
 
     setState(() => _isSaving = true);
 
-    // Sincronizza i mazzi avversari inseriti nei controller
+    // Sincronizza i mazzi avversari e le considerazioni inserite nei controller
     for (int i = 0; i < _roundsData.length; i++) {
       _roundsData[i].opponentDeck = _opponentControllers[i].text.trim();
+      _roundsData[i].considerations = _considerationsControllers[i].text.trim();
     }
 
     final reportId = widget.existingReport?.id ??
@@ -404,6 +413,7 @@ class _TournamentEntryScreenState extends State<TournamentEntryScreen> {
                       roundIndex: index,
                       matchRound: _roundsData[index],
                       opponentController: _opponentControllers[index],
+                      considerationsController: _considerationsControllers[index],
                       onOutcomeChanged: (newOutcome) {
                         setState(() {
                           _roundsData[index].outcome = newOutcome;

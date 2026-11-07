@@ -1,11 +1,11 @@
 {
-    "name": "Pokémon TCG Local Tracker",
-    "short_name": "PKMN Tracker",
+    "name": "Channel GCC Report",
+    "short_name": "Channel GCC",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0F172A",
     "theme_color": "#0F172A",
-    "description": "Applicazione per il tracciamento e riepilogo dei tornei Pokémon TCG Local.",
+    "description": "Channel GCC Report - Tracciamento tornei, statistiche e gestione mazzi Pokémon GCC.",
     "orientation": "portrait",
     "prefer_related_applications": false,
     "icons": [

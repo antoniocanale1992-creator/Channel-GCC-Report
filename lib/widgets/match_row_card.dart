@@ -9,6 +9,7 @@ class MatchRowCard extends StatelessWidget {
   final int roundIndex; // 0-based
   final MatchRound matchRound;
   final TextEditingController opponentController;
+  final TextEditingController considerationsController;
   final ValueChanged<MatchOutcome> onOutcomeChanged;
 
   const MatchRowCard({
@@ -16,6 +17,7 @@ class MatchRowCard extends StatelessWidget {
     required this.roundIndex,
     required this.matchRound,
     required this.opponentController,
+    required this.considerationsController,
     required this.onOutcomeChanged,
   });
 
@@ -219,6 +221,40 @@ class MatchRowCard extends StatelessWidget {
                   ],
                 ),
               ],
+            ),
+            const SizedBox(height: 10),
+
+            // Campo Considerazioni per il turno con icona a nuvoletta
+            TextFormField(
+              controller: considerationsController,
+              style: const TextStyle(fontSize: 13),
+              minLines: 1,
+              maxLines: 3,
+              decoration: InputDecoration(
+                prefixIcon: const Icon(
+                  Icons.chat_bubble_outline_rounded,
+                  size: 17,
+                  color: AppTheme.ultraBallGold,
+                ),
+                hintText: 'Considerazioni (es. cosa ha funzionato, errori, matchup...)',
+                hintStyle: const TextStyle(fontSize: 12, color: AppTheme.textMuted),
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+                filled: true,
+                fillColor: AppTheme.inputFill.withValues(alpha: 0.6),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: AppTheme.darkBorder),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: AppTheme.darkBorder),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: AppTheme.ultraBallGold, width: 1.2),
+                ),
+              ),
             ),
           ],
         ),

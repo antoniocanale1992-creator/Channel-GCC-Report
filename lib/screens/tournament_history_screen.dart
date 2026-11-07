@@ -864,42 +864,7 @@ class _TournamentHistoryScreenState extends State<TournamentHistoryScreen> {
             ),
           ),
           const SizedBox(height: 6),
-          ...report.rounds.map((round) {
-            Color outcomeColor = AppTheme.textSecondary;
-            if (round.outcome == MatchOutcome.win) outcomeColor = AppTheme.winGreenLight;
-            if (round.outcome == MatchOutcome.loss) outcomeColor = AppTheme.lossRedLight;
-            if (round.outcome == MatchOutcome.draw) outcomeColor = AppTheme.drawYellowLight;
-
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 3.0),
-              child: Row(
-                children: [
-                  Text(
-                    'T${round.roundNumber}: vs ',
-                    style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13),
-                  ),
-                  Expanded(
-                    child: Text(
-                      round.opponentDeck.isNotEmpty ? round.opponentDeck : '(Mazzo non indicato)',
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: outcomeColor.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: outcomeColor, width: 1),
-                    ),
-                    child: Text(
-                      round.outcome.code,
-                      style: TextStyle(color: outcomeColor, fontWeight: FontWeight.bold, fontSize: 12),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }),
+          ...report.rounds.map((round) => _RoundHistoryItem(round: round)),
           const SizedBox(height: 12),
 
           // Retrospettiva
@@ -988,5 +953,155 @@ class _DeckAggregateStats {
     final total = wins + losses + draws;
     if (total == 0) return 0.0;
     return (wins / total) * 100;
+  }
+}
+
+/// Elemento per la visualizzazione di un singolo turno nello storico con dropdown per le considerazioni
+class _RoundHistoryItem extends StatefulWidget {
+  final MatchRound round;
+
+  const _RoundHistoryItem({required this.round});
+
+  @override
+  State<_RoundHistoryItem> createState() => _RoundHistoryItemState();
+}
+
+class _RoundHistoryItemState extends State<_RoundHistoryItem> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final round = widget.round;
+    Color outcomeColor = AppTheme.textSecondary;
+    if (round.outcome == MatchOutcome.win) outcomeColor = AppTheme.winGreenLight;
+    if (round.outcome == MatchOutcome.loss) outcomeColor = AppTheme.lossRedLight;
+    if (round.outcome == MatchOutcome.draw) outcomeColor = AppTheme.drawYellowLight;
+
+    final hasConsiderations = round.considerations.trim().isNotEmpty;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2.5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            onTap: hasConsiderations
+                ? () {
+                    setState(() {
+                      _isExpanded = !_isExpanded;
+                    });
+                  }
+                : null,
+            borderRadius: BorderRadius.circular(6),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 2.0),
+              child: Row(
+                children: [
+                  Text(
+                    'T${round.roundNumber}: vs ',
+                    style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            round.opponentDeck.isNotEmpty ? round.opponentDeck : '(Mazzo non indicato)',
+                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        if (hasConsiderations) ...[
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+                            decoration: BoxDecoration(
+                              color: AppTheme.ultraBallGold.withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: AppTheme.ultraBallGold.withValues(alpha: 0.4),
+                                width: 0.8,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.chat_bubble_outline_rounded,
+                                  size: 11,
+                                  color: AppTheme.ultraBallGold,
+                                ),
+                                const SizedBox(width: 2),
+                                Icon(
+                                  _isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                                  size: 14,
+                                  color: AppTheme.ultraBallGold,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: outcomeColor.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: outcomeColor, width: 1),
+                    ),
+                    child: Text(
+                      round.outcome.code,
+                      style: TextStyle(color: outcomeColor, fontWeight: FontWeight.bold, fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (hasConsiderations && _isExpanded)
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              margin: const EdgeInsets.only(top: 4, bottom: 4, left: 14, right: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppTheme.inputFill,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: AppTheme.ultraBallGold.withValues(alpha: 0.35),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 1.5),
+                    child: Icon(
+                      Icons.chat_bubble_outline_rounded,
+                      size: 13,
+                      color: AppTheme.ultraBallGold,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      round.considerations,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppTheme.textPrimary,
+                        height: 1.35,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }

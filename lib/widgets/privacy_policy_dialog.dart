@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
 /// Dialog completo per Informativa sulla Privacy, Conformità Store e Disclaimer Pokémon
@@ -75,32 +75,36 @@ class PrivacyPolicyDialog extends StatelessWidget {
               _buildSectionTitle('1. Tipologia di Dati Trattati'),
               _buildSectionBody(
                 'L\'applicazione memorizza unicamente i dati inseriti volontariamente dall\'utente: '
-                'report delle partite dei tornei, liste mazzi e nomi delle fumetterie/location.',
+                'report delle partite dei tornei, considerazioni e impressioni tattiche per ciascun turno, '
+                'esiti dei match (W/L/D), liste mazzi, note strategiche e location/fumetterie.',
               ),
 
-              _buildSectionTitle('2. Permessi & Privacy'),
+              _buildSectionTitle('2. Permessi, PWA & Tracciamento'),
               _buildSectionBody(
-                '• NESSUN tracciamento GPS in background.\n'
+                '• NESSUN tracciamento pubblicitario, cookie di terze parti o profilazione.\n'
                 '• NESSUN accesso a contatti, galleria, microfono o fotocamera.\n'
-                '• L\'avvio del navigatore per le fumetterie utilizza l\'app Google Maps solo su esplicita richiesta dell\'utente.',
+                '• L\'avvio del navigatore per le fumetterie utilizza Google Maps solo su esplicita richiesta dell\'utente.',
               ),
 
-              _buildSectionTitle('3. Memorizzazione e Sincronizzazione Cloud'),
+              _buildSectionTitle('3. Memorizzazione e Isolamento Cloud Firestore'),
               _buildSectionBody(
-                'I dati risiedono in locale sul dispositivo. In caso di autenticazione con Google, Apple o Email, i dati vengono sincronizzati '
-                'in modo cifrato per permettere l\'accesso su più dispositivi.',
+                'I dati risiedono in locale sul dispositivo con architettura Offline-First. In caso di autenticazione universale con Google, '
+                'i dati vengono sincronizzati in una collezione Cloud Firestore isolata e protetta (users/{userId}/**), accessibile '
+                'esclusivamente dall\'utente titolare autenticato tramite regole di sicurezza certificate. '
+                'Il Kill Switch remoto verifica unicamente lo stato di servizio (config/app_status) senza raccogliere dati personali.',
               ),
 
               _buildSectionTitle('4. Diritti dell\'Utente (GDPR / CCPA / Store Policy)'),
               _buildSectionBody(
-                '• Portabilità: Puoi esportare tutti i tuoi dati in qualsiasi momento in formato JSON tramite il tasto Esporta.\n'
-                '• Cancellazione Completa: Tramite la sezione Account puoi eliminare definitivamente e senza recupero il profilo e tutti i dati associati.',
+                '• Portabilità (Art. 20 GDPR): Puoi esportare tutti i tuoi dati in qualsiasi momento in formato JSON strutturato o riepilogo testuale.\n'
+                '• Diritto all\'Oblio e Cancellazione Totale (Art. 17 GDPR): Dalla sezione Account puoi eliminare definitivamente '
+                'e in modo irreversibile sia l\'account autenticato che tutti i record locali e cloud con un solo tocco.',
               ),
 
               const SizedBox(height: 8),
               const Center(
                 child: Text(
-                  'Sviluppato da Antonio Canale\nVersione 1.2.1 - Channel GCC Report',
+                  'Sviluppato da Antonio Canale\nVersione 1.4.0 (PWA & Cloud) - Channel GCC Report',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 11, color: AppTheme.textMuted),
                 ),

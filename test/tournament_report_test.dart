@@ -62,7 +62,7 @@ void main() {
         deckUsed: 'Gholdengo ex',
         roundsCount: 2,
         rounds: [
-          MatchRound(roundNumber: 1, opponentDeck: 'Charizard', outcome: MatchOutcome.win),
+          MatchRound(roundNumber: 1, opponentDeck: 'Charizard', outcome: MatchOutcome.win, considerations: 'Ottimo start con Manaphy'),
           MatchRound(roundNumber: 2, opponentDeck: 'Miraidon', outcome: MatchOutcome.loss),
         ],
         finalPlacement: '3° posto',
@@ -79,6 +79,7 @@ void main() {
       expect(restored.eventType, original.eventType);
       expect(restored.rounds.length, 2);
       expect(restored.rounds[0].outcome, MatchOutcome.win);
+      expect(restored.rounds[0].considerations, 'Ottimo start con Manaphy');
       expect(restored.rounds[1].outcome, MatchOutcome.loss);
       expect(restored.whatWorked, original.whatWorked);
       expect(restored.toImprove, original.toImprove);
